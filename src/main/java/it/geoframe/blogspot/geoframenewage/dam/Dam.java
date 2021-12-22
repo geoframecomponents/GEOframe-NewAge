@@ -20,7 +20,7 @@
 package it.geoframe.blogspot.geoframenewage.dam;
 
 
-import static org.jgrasstools.gears.libs.modules.JGTConstants.isNovalue;
+import static org.hortonmachine.gears.libs.modules.HMConstants.isNovalue;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -31,15 +31,7 @@ import oms3.annotations.Execute;
 import oms3.annotations.In;
 import oms3.annotations.Out;
 
-import org.geotools.feature.SchemaException;
-
-import it.geoframe.blogspot.geoframenewage.dam.ODE;
-import it.geoframe.blogspot.numerical.ode.NestedNewton;
 import it.geoframe.blogspot.numerical.ode.NewtonRaphson;
-
-import java.io.IOException;
-
-import org.apache.commons.math3.ode.*;
 
 
 /**
@@ -103,10 +95,6 @@ public class Dam{
 	public double timeStepMinutes;
 
 
-//	@Description("The HashMap with the Actual input of the layer ")
-//	@Out
-//	public HashMap<Integer, double[]> outHMActualInput= new HashMap<Integer, double[]>() ;
-
 	@Description("The output HashMap with the Water Storage  ")
 	@Out
 	public HashMap<Integer, double[]> outHMFreeSurfaceLevel = new HashMap<Integer, double[]>() ;
@@ -134,7 +122,6 @@ public class Dam{
 	private int step;
 	
 	private double rain;
-	private double volume;
 	private double level;
 	private double Ep;
 	private double Qin;
@@ -145,7 +132,6 @@ public class Dam{
 	private ODE ode;
 
 	private NewtonRaphson newton;
-//	private NestedNewton newton;
 	
 	private AreaStage areaStage;
 	private WeirDischarge weirDischarge;
@@ -188,7 +174,6 @@ public class Dam{
 				
 				ode = new ODE();
 				newton = new NewtonRaphson();
-//				newton = new NestedNewton();
 				areaStage = new AreaStage(a, b);
 				weirDischarge = new WeirDischarge(weirCoefficient, weirWidth, weirHeight);
 

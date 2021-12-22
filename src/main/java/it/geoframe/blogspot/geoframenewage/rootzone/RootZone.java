@@ -20,7 +20,7 @@
 package it.geoframe.blogspot.geoframenewage.rootzone;
 
 
-import static org.jgrasstools.gears.libs.modules.JGTConstants.isNovalue;
+import static org.hortonmachine.gears.libs.modules.HMConstants.isNovalue;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -31,15 +31,8 @@ import oms3.annotations.Execute;
 import oms3.annotations.In;
 import oms3.annotations.Out;
 
-import org.geotools.feature.SchemaException;
 
-import it.geoframe.blogspot.geoframenewage.rootzone.ODE;
 import it.geoframe.blogspot.numerical.ode.NestedNewton;
-import it.geoframe.blogspot.numerical.ode.NewtonRaphson;
-
-import java.io.IOException;
-
-import org.apache.commons.math3.ode.*;
 
 
 /**
@@ -65,10 +58,6 @@ public class RootZone{
 	@In
 	public HashMap<Integer, double[]>initialConditionS_i;
 
-//	@Description("The maximum storage capacity")
-//	@In
-//	public double pCmax;
-
 	@Description("Maximum percolation rate")
 	@In
 	public double coefficientRootZoneDischarge;
@@ -77,19 +66,12 @@ public class RootZone{
 	@In
 	public double exponentRootZoneDischarge;
 
-
-
 	@Description("Maximum value of the water storage, needed for the"
 			+ "computation of the Actual EvapoTraspiration")
 	@In
 	@Out
 	public double storageMaxRootZone;
-	
-//	@Description("CI of the water storage")
-//	@In
-//	@Out
-//	public double s_RootZoneCI;
-	
+		
 	@Description("Initial saturation_degree")
 	@In
 	public double saturationDegree=0.6;
@@ -104,10 +86,6 @@ public class RootZone{
 	public double inTimestep;
 
 
-//	@Description("The HashMap with the Actual input of the layer ")
-//	@Out
-//	public HashMap<Integer, double[]> outHMActualInput= new HashMap<Integer, double[]>() ;
-
 	@Description("The output HashMap with the Water Storage  ")
 	@Out
 	public HashMap<Integer, double[]> outHMStorage= new HashMap<Integer, double[]>() ;
@@ -121,14 +99,6 @@ public class RootZone{
 	@Description("The output HashMap with the outflow which drains to the lower layer")
 	@Out
 	public HashMap<Integer, double[]> outHMRecharge= new HashMap<Integer, double[]>() ;
-
-//	@Description("The output HashMap with the quick outflow ")
-//	@Out
-//	public HashMap<Integer, double[]> outHMquick= new HashMap<Integer, double[]>() ;
-//
-//	@Description("The output HashMap with the quick outflow ")
-//	@Out
-//	public HashMap<Integer, double[]> outHMquick_mm= new HashMap<Integer, double[]>() ;
 
 
 	private int step;
@@ -145,13 +115,9 @@ public class RootZone{
 	
 	private ODE ode;
 
-//	private NewtonRaphson newton;
 	private NestedNewton newton;
 
 	double CI;
-
-
-
 
 
 	/**
@@ -162,20 +128,14 @@ public class RootZone{
 	 */
 	@Execute
 	public void process() throws Exception {
-		//checkNull(inHMRain);
 
-
-		// reading the ID of all the stations 
 		entrySet = inHMRain.entrySet();
 
 
-
-		// iterate over the station
 		for( Entry<Integer, double[]> entry : entrySet ) {
 			Integer ID = entry.getKey();
 
 			if(step==0){
-//				System.out.println("RZ--a:"+a+"-brz:"+b+"-Smax:"+s_RootZoneMax+"-pB_soil:"+pB_soil);
 
 				if(initialConditionS_i!=null){
 					storage = initialConditionS_i.get(ID)[0];	
@@ -186,7 +146,6 @@ public class RootZone{
 				}
 				
 				ode = new ODE();
-//				newton = new NewtonRaphson();
 				newton = new NestedNewton();
 
 			}
@@ -221,10 +180,6 @@ public class RootZone{
 			outHMStorage.put(ID, new double[]{storage});
 			outHMETa.put(ID, new double[]{ETa});
 			outHMRecharge.put(ID, new double[]{recharge});
-
-
-			//initialConditionS_i.put(ID,new double[]{waterStorage});
-
 
 
 		}

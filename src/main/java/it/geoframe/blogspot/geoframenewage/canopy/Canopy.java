@@ -19,7 +19,7 @@
 
 package it.geoframe.blogspot.geoframenewage.canopy;
 
-import static org.jgrasstools.gears.libs.modules.JGTConstants.isNovalue;
+import static org.hortonmachine.gears.libs.modules.HMConstants.isNovalue;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -31,13 +31,9 @@ import oms3.annotations.In;
 import oms3.annotations.Out;
 import oms3.annotations.Unit;
 
-import org.geotools.feature.SchemaException;
 
 import it.geoframe.blogspot.numerical.ode.NewtonRaphson;
 
-import java.io.IOException;
-
-import org.apache.commons.math3.ode.*;
 
 /**
  * @author Niccolò Tubini, Giuseppe Formetta
@@ -146,12 +142,8 @@ public class Canopy{
 	@Execute
 	public void process() throws Exception {
 
+		entrySet = inHMRain.entrySet();
 
-
-		// reading the ID of all the stations 	
-		Set<Entry<Integer, double[]>> entrySet = inHMRain.entrySet();
-
-		// iterate over the station
 		for( Entry<Integer, double[]> entry : entrySet ) {
 			Integer ID = entry.getKey();
 
@@ -175,7 +167,6 @@ public class Canopy{
 				}else{
 					storage=LAICoefficient*LAI/2;
 				}
-				System.out.println("InitialConditionStorage:"+storage);
 
 				ode = new ODE();
 				newton = new NewtonRaphson();
@@ -186,7 +177,6 @@ public class Canopy{
 
 
 			storageMax =  LAICoefficient*LAI;
-//			ETa = Math.min(ETp, storage);
 			ode.set(storage, rainfall, ETp, freeThroughfallCoefficient,
 					 drainageRateCoefficient, drainageRateExponent,storageMax);
 			storage = newton.solve(storage, ode);

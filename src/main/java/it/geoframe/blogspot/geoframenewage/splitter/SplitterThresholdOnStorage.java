@@ -19,7 +19,7 @@
 
 package it.geoframe.blogspot.geoframenewage.splitter;
 
-import static org.jgrasstools.gears.libs.modules.JGTConstants.isNovalue;
+import static org.hortonmachine.gears.libs.modules.HMConstants.isNovalue;
 
 import java.util.HashMap;
 import java.util.Set;

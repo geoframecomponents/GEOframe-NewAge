@@ -19,14 +19,13 @@
 
 package it.geoframe.blogspot.geoframenewage.runoff;
 
-import static org.jgrasstools.gears.libs.modules.JGTConstants.isNovalue;
+import static org.hortonmachine.gears.libs.modules.HMConstants.isNovalue;
 
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import it.geoframe.blogspot.numerical.ode.NestedNewton;
-//import it.geoframe.blogspot.numerical.ode.NewtonRaphson;
 import oms3.annotations.Description;
 import oms3.annotations.Execute;
 import oms3.annotations.In;
@@ -47,20 +46,13 @@ public class Runoff {
 	@In
 	public HashMap<Integer, double[]>initialConditionS_i;
 
-
 	@Description("Time Step simulation")
 	@In
 	public int timeStep;
 	
-//	@Description("ERM or sERM")
-//	@In
-//	public String model;
-
-
 	@Description("Coefficient of the non-linear Reservoir model ")
 	@In
 	public double coefficientRunoffDischarge ;
-
 
 	@Description("Exponent of non-linear reservoir")
 	@In
@@ -88,9 +80,6 @@ public class Runoff {
 	@Out
 	public HashMap<Integer, double[]> outHMDischarge_mm = new HashMap<Integer, double[]>() ;
 
-//	@Description("The output HashMap with the discharge in mm")
-//	@Out
-//	public HashMap<Integer, double[]> outHMDischarge_mm= new HashMap<Integer, double[]>() ;
 
 	private int step;
 	
@@ -102,7 +91,6 @@ public class Runoff {
 
 	private ODE ode;
 
-//	private NewtonRaphson newton;
 	private NestedNewton newton;
 	
 	double CI;
@@ -115,21 +103,13 @@ public class Runoff {
 	 */
 	@Execute
 	public void process() throws Exception {
-		//checkNull(inHMRain);
 
-
-		// reading the ID of all the stations 
 		entrySet = inHMRain.entrySet();
 
-
-
-
-		// iterate over the station
 		for( Entry<Integer, double[]> entry : entrySet ) {
 			Integer ID = entry.getKey();
 
 			if(step==0){
-//				System.out.println("RZ--a:"+a+"-brz:"+b+"-Smax:"+s_RootZoneMax+"-pB_soil:"+pB_soil);
 
 				if(initialConditionS_i!=null){
 					storage = initialConditionS_i.get(ID)[0];	
@@ -160,11 +140,6 @@ public class Runoff {
 			outHMStorage.put(ID, new double[]{storage});
 			outHMDischarge.put(ID, new double[]{discharge/1000*area*Math.pow(10, 6)/(60*timeStep)});
 			outHMDischarge_mm.put(ID, new double[]{discharge});
-
-
-			//initialConditionS_i.put(ID,new double[]{waterStorage});
-
-
 
 		}
 

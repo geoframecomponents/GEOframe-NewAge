@@ -1,7 +1,7 @@
 /*
  * GNU GPL v3 License
  *
- * Copyright 2021 Niccolò Tubini, Giuseppe Formetta
+ * Copyright 2021 Niccolò Tubini
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,13 @@
 
 package it.geoframe.blogspot.geoframenewage.groundwater;
 
-import static org.jgrasstools.gears.libs.modules.JGTConstants.isNovalue;
+import static org.hortonmachine.gears.libs.modules.HMConstants.isNovalue;
 
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
 import it.geoframe.blogspot.numerical.ode.NestedNewton;
-//import it.geoframe.blogspot.numerical.ode.NewtonRaphson;
 import oms3.annotations.Description;
 import oms3.annotations.Execute;
 import oms3.annotations.In;
@@ -52,10 +51,6 @@ public class GroundWater {
 	@In
 	public int timeStep;
 	
-//	@Description("ERM or sERM")
-//	@In
-//	public String model;
-
 
 	@Description("Coefficient of the non-linear Reservoir model ")
 	@In
@@ -98,7 +93,6 @@ public class GroundWater {
 
 	private ODE ode;
 
-//	private NewtonRaphson newton;
 	private NestedNewton newton;
 	
 	double CI;
@@ -111,13 +105,9 @@ public class GroundWater {
 	 */
 	@Execute
 	public void process() throws Exception {
-		//checkNull(inHMRain);
-
 
 		// reading the ID of all the stations 
 		entrySet = inHMRecharge.entrySet();
-
-
 
 
 		// iterate over the station
@@ -125,8 +115,7 @@ public class GroundWater {
 			Integer ID = entry.getKey();
 
 			if(step==0){
-//				System.out.println("RZ--a:"+a+"-brz:"+b+"-Smax:"+s_RootZoneMax+"-pB_soil:"+pB_soil);
-
+				
 				if(initialConditionS_i!=null){
 					storage = initialConditionS_i.get(ID)[0];	
 					if (isNovalue(storage)) storage = 0;	
