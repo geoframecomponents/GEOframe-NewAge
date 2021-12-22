@@ -23,12 +23,11 @@ package it.geoframe.blogspot.geoframenewage.damtest;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import org.jgrasstools.gears.io.timedependent.OmsTimeSeriesIteratorReader;
-import org.jgrasstools.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
+import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
+import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
 
 import it.geoframe.blogspot.geoframenewage.dam.Dam;
-import it.geoframe.blogspot.geoframenewage.runoff.Runoff;
 
 /**
  * @author Niccolò Tubini, Giuseppe Formetta
@@ -49,18 +48,12 @@ public class TestDam{
 		String inPathToQin ="resources/Input/Qin.csv";
 		String inPathToQout ="resources/Input/Qout.csv";
 		
-//		String inPathToPrec ="C:/Users/Niccolo/OMS/OMS_Project_ERM2021/output/rainfall.csv";
-//		String inPathToEp ="C:/Users/Niccolo/OMS/OMS_Project_ERM2021/output/ET.csv";
-//		String inPathToQin ="C:/Users/Niccolo/OMS/OMS_Project_ERM2021/output/Qin.csv";
-//		String inPathToQout ="C:/Users/Niccolo/OMS/OMS_Project_ERM2021/output/Qout.csv";
-
-		String inPathToCI ="resources/Input/S_OUT_rz.csv";
 		
-		String pathToLevel=  "resources/Output/rootZone/level.csv";
-		String pathToVolume=  "resources/Output/rootZone/Volume.csv";
-		String pathToArea=  "resources/Output/rootZone/Area.csv";
-		String pathToQreservoir=  "resources/Output/rootZone/Qreservoir.csv";
-		String pathToQweir=  "resources/Output/rootZone/Qweir.csv";
+		String pathToLevel=  "resources/Output/dam/level.csv";
+		String pathToVolume=  "resources/Output/dam/Volume.csv";
+		String pathToArea=  "resources/Output/dam/Area.csv";
+		String pathToQreservoir=  "resources/Output/dam/Qreservoir.csv";
+		String pathToQweir=  "resources/Output/dam/Qweir.csv";
 
 
 		
@@ -69,8 +62,6 @@ public class TestDam{
 
 		OmsTimeSeriesIteratorReader QinReader = getTimeseriesReader(inPathToQin, fId, startDate, endDate, timeStepMinutes);
 		OmsTimeSeriesIteratorReader QoutReader = getTimeseriesReader(inPathToQout, fId, startDate, endDate, timeStepMinutes);
-
-		OmsTimeSeriesIteratorReader CIReader = getTimeseriesReader(inPathToCI, fId, startDate, startDate, timeStepMinutes);
 
 		OmsTimeSeriesIteratorWriter writerLevel = new OmsTimeSeriesIteratorWriter();
 		OmsTimeSeriesIteratorWriter writerVolume = new OmsTimeSeriesIteratorWriter();
@@ -138,24 +129,9 @@ public class TestDam{
 			QoutReader.nextRecord();
 			waterBudget.inHMQout = QoutReader.outData;
 
-			
-//            CIReader.nextRecord();
-//            id2ValueMap = CIReader.outData;
-//            waterBudget.initialConditionS_i = id2ValueMap;
-			
-
-//            System.out.println(JReader.tCurrent);
-//            if(JReader.tCurrent.equalsIgnoreCase("2014-10-01 12:00")) {
-//            	System.out.println("qui");
-//            }
 
             waterBudget.process();
-            
-//            HashMap<Integer, double[]> outHMStorage = waterBudget.outHMStorage;
-//            HashMap<Integer, double[]> outHMET = waterBudget.outHMEvaporation;
-//            
-//            HashMap<Integer, double[]> outHMR = waterBudget.outHMR;
-//            
+                        
 			writerLevel.inData = waterBudget.outHMFreeSurfaceLevel;
 			writerLevel.writeNextLine();
 			
@@ -170,28 +146,26 @@ public class TestDam{
 			
 			writerQweir.inData = waterBudget.outHMQweir;
 			writerQweir.writeNextLine();
-//			
-//			if (pathToS != null) {
-//				writerS.close();
-//			}
-//			
-//
-//			
-//			writerET.inData = outHMET;
-//			writerET.writeNextLine();
-//			
-//			if (pathToET != null) {
-//				writerET.close();
-//			}
-//			
-//			
-//			
-//			writerR.inData = outHMR;
-//			writerR.writeNextLine();
-//			
-//			if (pathToR != null) {
-//				writerR.close();
-//			}
+			
+			if (pathToLevel != null) {
+				writerLevel.close();
+			}
+			
+			if (pathToVolume != null) {
+				writerVolume.close();
+			}
+
+			if (pathToArea != null) {
+				writerArea.close();
+			}
+			
+			if (pathToQreservoir != null) {
+				writerQreservoir.close();
+			}
+			
+			if (pathToQweir != null) {
+				writerQweir.close();
+			}
             
 		}
 		JReader.close();

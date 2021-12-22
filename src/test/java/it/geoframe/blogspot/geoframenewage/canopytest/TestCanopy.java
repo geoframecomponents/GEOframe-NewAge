@@ -23,8 +23,8 @@ package it.geoframe.blogspot.geoframenewage.canopytest;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import org.jgrasstools.gears.io.timedependent.OmsTimeSeriesIteratorReader;
-import org.jgrasstools.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
+import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
+import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
 
 import it.geoframe.blogspot.geoframenewage.canopy.Canopy;
@@ -40,16 +40,15 @@ public class TestCanopy{
 
 		String startDate = "1994-01-01 00:00";
 		String endDate = "1994-06-01 00:00";
-		int timeStepMinutes = 60*24;
+		int timeStepMinutes = 60;
 		String fId = "ID";
 		
 
 
 
-		String inPathToPrec = "resources/Input/Melting_1.csv";
-		String inPathToET ="resources/Input/etp_1_daily.csv";
-		String inPathToLAI= "resources/Input/LAI_1_daily.csv";	
-		String inPathToCI ="resources/Input/S_Canopy.csv";
+		String inPathToPrec = "resources/Input/rainfall.csv";
+		String inPathToET ="resources/Input/ET.csv";
+		String inPathToLAI= "resources/Input/LAI.csv";	
 
 		
 		String pathToS= "resources/Output/canopy/S_Canopy.csv";
@@ -60,7 +59,6 @@ public class TestCanopy{
 		OmsTimeSeriesIteratorReader ETReader = getTimeseriesReader(inPathToET, fId, startDate, endDate, timeStepMinutes);
 		OmsTimeSeriesIteratorReader RainReader = getTimeseriesReader(inPathToPrec, fId, startDate, endDate, timeStepMinutes);
 		OmsTimeSeriesIteratorReader LAIReader = getTimeseriesReader(inPathToLAI, fId, startDate, endDate, timeStepMinutes);
-		OmsTimeSeriesIteratorReader CIReader = getTimeseriesReader(inPathToCI, fId, startDate, startDate, timeStepMinutes);
 
 		
 		OmsTimeSeriesIteratorWriter writerS = new OmsTimeSeriesIteratorWriter();
@@ -97,18 +95,12 @@ public class TestCanopy{
 			waterBudget.drainageRateCoefficient = 1;
 			waterBudget.drainageRateExponent = 1;
 
-
-
 			
 			RainReader.nextRecord();
 			
 			HashMap<Integer, double[]> id2ValueMap = RainReader.outData;
 			waterBudget.inHMRain= id2ValueMap;
-			
-/*            CIReader.nextRecord();
-            id2ValueMap = CIReader.outData;
-            waterBudget.initialConditionS_i = id2ValueMap;*/
-            
+			            
             ETReader.nextRecord();
             id2ValueMap = ETReader.outData;
             waterBudget.inHMETp = id2ValueMap;
@@ -120,36 +112,36 @@ public class TestCanopy{
 
             waterBudget.process();
             
-//            HashMap<Integer, double[]> outHMStorage = waterBudget.outHMStorage;
-//            HashMap<Integer, double[]> outHMET = waterBudget.outHMAET;
-//            HashMap<Integer, double[]> outHThroughfall = waterBudget.outHMThroughfall;
-//            
-//            
-//			writerS.inData = outHMStorage ;
-//			writerS.writeNextLine();
-//			
-//			if (pathToS != null) {
-//				writerS.close();
-//			}
-//			
-//
-//			
-//			writerAET.inData = outHMET;
-//			writerAET.writeNextLine();
-//			
-//			if (pathToET != null) {
-//				writerAET.close();
-//			}
-//			
-//			
-//			writerThroughfall.inData =outHThroughfall ;
-//			writerThroughfall.writeNextLine();
-//			
-//			if (pathToThroughfall != null) {
-//				writerThroughfall.close();
-//			}
-//			
-//
+            HashMap<Integer, double[]> outHMStorage = waterBudget.outHMStorage;
+            HashMap<Integer, double[]> outHMET = waterBudget.outHMAET;
+            HashMap<Integer, double[]> outHThroughfall = waterBudget.outHMThroughfall;
+            
+            
+			writerS.inData = outHMStorage ;
+			writerS.writeNextLine();
+			
+			if (pathToS != null) {
+				writerS.close();
+			}
+			
+
+			
+			writerAET.inData = outHMET;
+			writerAET.writeNextLine();
+			
+			if (pathToET != null) {
+				writerAET.close();
+			}
+			
+			
+			writerThroughfall.inData =outHThroughfall ;
+			writerThroughfall.writeNextLine();
+			
+			if (pathToThroughfall != null) {
+				writerThroughfall.close();
+			}
+			
+
 		}
 
         LAIReader.close();
