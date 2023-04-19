@@ -1,7 +1,7 @@
 /*
  * GNU GPL v3 License
  *
- * Copyright 2021 Niccolò Tubini, Giuseppe Formetta, Riccardo Rigon
+ * Copyright 2021 Niccolï¿½ Tubini, Giuseppe Formetta, Riccardo Rigon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 package it.geoframe.blogspot.geoframenewage.dam;
 
 /**
- * @author Niccolò Tubini, Giuseppe Formetta
+ * @author Niccolï¿½ Tubini, Giuseppe Formetta
  * 
  */
 public class WeirDischarge {
@@ -28,6 +28,7 @@ public class WeirDischarge {
 	double weirCoefficient;
 	double weirWidth;
 	double weirHeight;
+	double exponent = 3.0/2.0;
 
 	public WeirDischarge(double weirCoefficient, double weirWidth, double weirHeight) {
 		
@@ -45,7 +46,7 @@ public class WeirDischarge {
 			
 		} else {
 			
-			return weirCoefficient*weirWidth*Math.sqrt(2*9.81)*Math.pow(level-weirHeight, 3/2);
+			return weirCoefficient*weirWidth*Math.sqrt(2*9.81)*Math.pow(level-weirHeight, exponent);
 			
 		}
 		
@@ -59,7 +60,7 @@ public class WeirDischarge {
 			
 		} else {
 			
-			return 3/2*weirCoefficient*weirWidth*Math.sqrt(2*9.81)*Math.pow(level-weirHeight, 3/2-1);
+			return exponent*weirCoefficient*weirWidth*Math.sqrt(2*9.81)*Math.pow(level-weirHeight, exponent-1.0);
 			
 		}
 		
